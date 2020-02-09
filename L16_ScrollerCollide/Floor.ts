@@ -2,8 +2,8 @@ namespace L16_ScrollerCollide {
   import ƒ = FudgeCore;
 
   export class Floor extends ƒ.Node {
-    private static mesh: ƒ.MeshSprite = new ƒ.MeshSprite();
-    private static material: ƒ.Material = new ƒ.Material("Floor", ƒ.ShaderUniColor, new ƒ.CoatColored(ƒ.Color.CSS("red", 0.5)));
+    private static mesh: ƒ.Mesh = new ƒ.MeshSprite();
+    private static material: ƒ.Material = new ƒ.Material("Floor", ƒ.ShaderUniColor, new ƒ.CoatColored(ƒ.Color.CSS("brown", 1)));
     private static readonly pivot: ƒ.Matrix4x4 = ƒ.Matrix4x4.TRANSLATION(ƒ.Vector3.Y(-0.5));
 
     public constructor() {
@@ -34,3 +34,4 @@ namespace L16_ScrollerCollide {
     }
   }
 }
+

@@ -32,6 +32,8 @@ namespace L14_ScrollerFoundation {
       this.frames = [];
       let framing: ƒ.FramingScaled = new ƒ.FramingScaled();
       framing.setScale(1 / _texture.image.width, 1 / _texture.image.height);
+      
+      
 
       let count: number = 0;
       for (let rect of _rects) {
@@ -77,7 +79,9 @@ namespace L14_ScrollerFoundation {
       let rectQuad: ƒ.Rectangle = new ƒ.Rectangle(0, 0, _rect.width / _resolutionQuad, _rect.height / _resolutionQuad, _origin);
       frame.pivot = ƒ.Matrix4x4.IDENTITY;
       frame.pivot.translate(new ƒ.Vector3(rectQuad.position.x + rectQuad.size.x / 2, -rectQuad.position.y - rectQuad.size.y / 2, 0));
+      frame.pivot.rotateX(180);    //Drehen
       frame.pivot.scaleX(rectQuad.size.x);
+      
       frame.pivot.scaleY(rectQuad.size.y);
       // ƒ.Debug.log(rectQuad.toString());
 

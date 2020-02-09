@@ -14,7 +14,7 @@ namespace L16_ScrollerCollide {
   export let game: ƒ.Node;
   export let level: ƒ.Node;
   let hare: Hare;
-
+  let dolly: number = 1.9;
 
   function test(): void {
     let canvas: HTMLCanvasElement = document.querySelector("canvas");
@@ -23,18 +23,29 @@ namespace L16_ScrollerCollide {
     let txtHare: ƒ.TextureImage = new ƒ.TextureImage();
     txtHare.image = img;
     Hare.generateSprites(txtHare);
+   // Dirt.generateSprites(txtHare);
+
+    
 
     ƒ.RenderManager.initialize(true, false);
     game = new ƒ.Node("Game");
     hare = new Hare("Hare");
+    //Dirt = new Dirt("Dirt");
     level = createLevel();
     game.appendChild(level);
     game.appendChild(hare);
+  
+
 
     let cmpCamera: ƒ.ComponentCamera = new ƒ.ComponentCamera();
     cmpCamera.pivot.translateZ(5);
-    cmpCamera.pivot.lookAt(ƒ.Vector3.ZERO());
-    cmpCamera.backgroundColor = ƒ.Color.CSS("aliceblue");
+    //cmpCamera.pivot.lookAt(ƒ.Vector3.Z(4));
+    cmpCamera.pivot.translateX(dolly);
+
+   
+    
+
+    cmpCamera.backgroundColor = ƒ.Color.CSS("lightblue");
 
     let viewport: ƒ.Viewport = new ƒ.Viewport();
     viewport.initialize("Viewport", game, cmpCamera, canvas);
@@ -56,22 +67,57 @@ namespace L16_ScrollerCollide {
     }
   }
 
-  function handleKeyboard(_event: KeyboardEvent): void {
-    keysPressed[_event.code] = (_event.type == "keydown");
-    if (_event.code == ƒ.KEYBOARD_CODE.SPACE && _event.type == "keydown")
-      hare.act(ACTION.JUMP);
-  }
+function handleKeyboard(_event: KeyboardEvent): void {
+  keysPressed[_event.code] = (_event.type == "keydown")
+   if (_event.code == ƒ.KEYBOARD_CODE.W && _event.type == "keydown")
+   hare.act(ACTION.JUMP);
+
+   if (_event.code == ƒ.KEYBOARD_CODE.S &&  _event.type == "keydown")
+   hare.act(ACTION.SLIDE);
+}
 
   function processInput(): void {
     if (keysPressed[ƒ.KEYBOARD_CODE.A]) {
       hare.act(ACTION.WALK, DIRECTION.LEFT);
-      return;
+      if (keysPressed[ƒ.KEYBOARD_CODE.S]) {
+        hare.act(ACTION.SLIDE, DIRECTION.LEFT);
+        return;
+      }
+    return;
     }
     if (keysPressed[ƒ.KEYBOARD_CODE.D]) {
       hare.act(ACTION.WALK, DIRECTION.RIGHT);
+      //dolly = dolly-1;
+      
+      if (keysPressed[ƒ.KEYBOARD_CODE.S]) {
+        hare.act(ACTION.SLIDE, DIRECTION.RIGHT);
+        return;
+      }
+
+    return;
+      
+    }
+    if (keysPressed[ƒ.KEYBOARD_CODE.S]) {
+      hare.act(ACTION.DUCK);
       return;
     }
 
+    if (keysPressed[ƒ.KEYBOARD_CODE.F]) {
+      hare.act(ACTION.RUN, DIRECTION.RIGHT);
+      return;
+    }
+
+    if (keysPressed[ƒ.KEYBOARD_CODE.W]) {
+      hare.act(ACTION.JUMP);
+      return;
+    }
+
+    if (keysPressed[ƒ.KEYBOARD_CODE.E]) {
+      hare.act(ACTION.ATTACK);
+      return;
+    }
+    
+    //Dirt.act(OBJECT.DIRT);
     hare.act(ACTION.IDLE);
   }
 
@@ -83,9 +129,15 @@ namespace L16_ScrollerCollide {
 
     floor = new Floor();
     floor.cmpTransform.local.scaleY(0.2);
-    floor.cmpTransform.local.scaleX(2);
+    floor.cmpTransform.local.scaleX(2.3);
     floor.cmpTransform.local.translateY(0.2);
     floor.cmpTransform.local.translateX(1.5);
+    level.appendChild(floor);
+    floor = new Floor ();
+    floor.cmpTransform.local.scaleY(0.8);
+    floor.cmpTransform.local.scaleX(3);
+    floor.cmpTransform.local.translateY(0.3);
+    floor.cmpTransform.local.translateX(4);
     level.appendChild(floor);
 
     return level;

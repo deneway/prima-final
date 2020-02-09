@@ -9,6 +9,10 @@ var L16_ScrollerCollide;
         ACTION["IDLE"] = "Idle";
         ACTION["WALK"] = "Walk";
         ACTION["JUMP"] = "Jump";
+        ACTION["DUCK"] = "Duck";
+        ACTION["RUN"] = "Run";
+        ACTION["SLIDE"] = "Slide";
+        ACTION["ATTACK"] = "Attack";
     })(ACTION = L16_ScrollerCollide.ACTION || (L16_ScrollerCollide.ACTION = {}));
     let DIRECTION;
     (function (DIRECTION) {
@@ -42,10 +46,27 @@ var L16_ScrollerCollide;
         static generateSprites(_txtImage) {
             Hare.sprites = [];
             let sprite = new L16_ScrollerCollide.Sprite(ACTION.WALK);
-            sprite.generateByGrid(_txtImage, ƒ.Rectangle.GET(2, 104, 68, 64), 6, ƒ.Vector2.ZERO(), 64, ƒ.ORIGIN2D.BOTTOMCENTER);
+            sprite.generateByGrid(_txtImage, ƒ.Rectangle.GET(75, 220, 150, 150), 9, ƒ.Vector2.ZERO(), 200, ƒ.ORIGIN2D.BOTTOMCENTER);
             Hare.sprites.push(sprite);
             sprite = new L16_ScrollerCollide.Sprite(ACTION.IDLE);
-            sprite.generateByGrid(_txtImage, ƒ.Rectangle.GET(8, 20, 45, 72), 4, ƒ.Vector2.ZERO(), 64, ƒ.ORIGIN2D.BOTTOMCENTER);
+            sprite.generateByGrid(_txtImage, ƒ.Rectangle.GET(75, 70, 150, 150), 11, ƒ.Vector2.ZERO(), 200, ƒ.ORIGIN2D.BOTTOMCENTER); //Position Hase (Bild an sich//Auschnitt(PositionInnerhalbLR/..ObenUNten//KA//Größe//)
+            Hare.sprites.push(sprite);
+            sprite = new L16_ScrollerCollide.Sprite(ACTION.JUMP);
+            sprite.generateByGrid(_txtImage, ƒ.Rectangle.GET(75, 370, 150, 150), 7, ƒ.Vector2.ZERO(), 200, ƒ.ORIGIN2D.BOTTOMCENTER); //Position Hase (Bild an sich//Auschnitt(PositionInnerhalbLR/..ObenUNten//KA//Größe//)
+            Hare.sprites.push(sprite);
+            sprite = new L16_ScrollerCollide.Sprite(ACTION.DUCK);
+            sprite.generateByGrid(_txtImage, ƒ.Rectangle.GET(75, 520, 150, 150), 4, ƒ.Vector2.ZERO(), 200, ƒ.ORIGIN2D.BOTTOMCENTER); //Position Hase (Bild an sich//Auschnitt(PositionInnerhalbLR/..ObenUNten//KA//Größe//)
+            Hare.sprites.push(sprite);
+            sprite.generateByGrid(_txtImage, ƒ.Rectangle.GET(525, 520, 150, 150), 1, ƒ.Vector2.ZERO(), 200, ƒ.ORIGIN2D.BOTTOMCENTER); //Position Hase (Bild an sich//Auschnitt(PositionInnerhalbLR/..ObenUNten//KA//Größe//)
+            Hare.sprites.push(sprite);
+            sprite = new L16_ScrollerCollide.Sprite(ACTION.RUN);
+            sprite.generateByGrid(_txtImage, ƒ.Rectangle.GET(75, 671, 150, 150), 7, ƒ.Vector2.ZERO(), 200, ƒ.ORIGIN2D.BOTTOMCENTER); //Position Hase (Bild an sich//Auschnitt(PositionInnerhalbLR/..ObenUNten//KA//Größe//)
+            Hare.sprites.push(sprite);
+            sprite = new L16_ScrollerCollide.Sprite(ACTION.SLIDE);
+            sprite.generateByGrid(_txtImage, ƒ.Rectangle.GET(75, 820, 150, 150), 3, ƒ.Vector2.ZERO(), 200, ƒ.ORIGIN2D.BOTTOMCENTER); //Position Hase (Bild an sich//Auschnitt(PositionInnerhalbLR/..ObenUNten//KA//Größe//)
+            Hare.sprites.push(sprite);
+            sprite = new L16_ScrollerCollide.Sprite(ACTION.ATTACK);
+            sprite.generateByGrid(_txtImage, ƒ.Rectangle.GET(75, 972, 150, 150), 7, ƒ.Vector2.ZERO(), 200, ƒ.ORIGIN2D.BOTTOMCENTER); //Position Hase (Bild an sich//Auschnitt(PositionInnerhalbLR/..ObenUNten//KA//Größe//)
             Hare.sprites.push(sprite);
         }
         show(_action) {
@@ -62,13 +83,30 @@ var L16_ScrollerCollide;
                     break;
                 case ACTION.WALK:
                     let direction = (_direction == DIRECTION.RIGHT ? 1 : -1);
-                    this.speed.x = Hare.speedMax.x; // * direction;
+                    this.speed.x = Hare.speedWalk.x; // * direction;
                     this.cmpTransform.local.rotation = ƒ.Vector3.Y(90 - 90 * direction);
-                    // console.log(direction);
+                    console.log(direction);
+                    break;
+                case ACTION.SLIDE:
+                    // let directionslide: number = (_direction == DIRECTION.RIGHT ? 1 : -1);
+                    // this.speed.x = Hare.speedWalk.x; //Hare.speedWalk.x; // * direction;
+                    // this.cmpTransform.local.rotation = ƒ.Vector3.Y(90 - 90 * directionslide);
+                    break;
+                case ACTION.ATTACK:
                     break;
                 case ACTION.JUMP:
-                    this.speed.y = 2;
+                    if (this.speed.y != 0) {
+                        break;
+                    }
+                    else {
+                        this.speed.y = 3;
+                        break;
+                    }
+                case ACTION.DUCK:
+                    this.speed.x = 0;
                     break;
+                case ACTION.RUN:
+                    this.speed.x = Hare.speedRun.x; // * direction;
             }
             this.show(_action);
         }
@@ -86,7 +124,8 @@ var L16_ScrollerCollide;
             }
         }
     }
-    Hare.speedMax = new ƒ.Vector2(1.5, 5); // units per second
+    Hare.speedWalk = new ƒ.Vector2(1, 5); // units per second
+    Hare.speedRun = new ƒ.Vector2(1.5, 5);
     Hare.gravity = ƒ.Vector2.Y(-3);
     L16_ScrollerCollide.Hare = Hare;
 })(L16_ScrollerCollide || (L16_ScrollerCollide = {}));
